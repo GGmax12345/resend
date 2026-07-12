@@ -1,8 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
-import resend
-
-resend.api_key = "re_3w3iU343_3gH2hvQxETgK6niFWUBPxRaf"
+import smtplib
+from email.mime.text import MIMEText
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -13,13 +12,23 @@ class handler(BaseHTTPRequestHandler):
         to_email = data.get('to')
         code = data.get('code')
 
+        # Настройки твоей почты Mail.ru
+        smtp_server = "smtp.mail.ru"
+        smtp_port = 465
+        sender_email = "sam_official@inbox.ru"
+        # Твой 24-значный пароль для внешних приложений из Mail.ru
+        sender_password = "tk7l6KKRnqjmW1f9Oxkp" 
+
+        msg = MIMEText(f"Ваш одноразовый код для входа в SAM Messenger: {code}\nКод действует 5 минут.")
+        msg['Subject'] = "Код подтверждения SAM Messenger"
+        msg['From'] = f"SAM Messenger <{sender_email}>"
+        msg['To'] = to_email
+
         try:
-            r = resend.Emails.send({
-                "from": "SAM Messenger <onboarding@resend.dev>",
-                "to": to_email,
-                "subject": "Код подтверждения SAM Messenger",
-                "html": f"<p>Ваш одноразовый код: <strong>{code}</strong></p>"
-            })
+            # Vercel без проблем пропустит это SMTP-подключение!
+            with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
+                server.login(sender_email, sender_password)
+                server.sendmail(sender_email, to_email, msg.as_string())
             
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
