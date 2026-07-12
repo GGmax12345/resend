@@ -2,7 +2,6 @@ from http.server import BaseHTTPRequestHandler
 import json
 import resend
 
-# Вставь сюда свой API-ключ из панели Resend
 resend.api_key = "re_3w3iU343_3gH2hvQxETgK6niFWUBPxRaf"
 
 class handler(BaseHTTPRequestHandler):
@@ -15,7 +14,6 @@ class handler(BaseHTTPRequestHandler):
         code = data.get('code')
 
         try:
-            # Resend отправляет системное письмо на Vercel-домен
             r = resend.Emails.send({
                 "from": "SAM Messenger <onboarding@resend.dev>",
                 "to": to_email,
