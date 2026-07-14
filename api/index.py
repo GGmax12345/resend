@@ -17,7 +17,7 @@ class handler(BaseHTTPRequestHandler):
         smtp_port = 465
         sender_email = "sam_official@inbox.ru"
         # Твой 24-значный пароль для внешних приложений из Mail.ru
-        sender_password = "tk7l6KKRnqjmW1f9Oxkp" 
+        sender_password = "7retsFoZtXNeF24SVDv1" 
 
         msg = MIMEText(f"Ваш одноразовый код для входа в SAM Messenger: {code}\nКод действует 5 минут.")
         msg['Subject'] = "Код подтверждения SAM Messenger"
